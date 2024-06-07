@@ -357,24 +357,24 @@ local function openos(...)
 
     if options.encrypt or options.e then
         if rootDir and pcall(component.invoke, address, "getCatchProperties") then
-            return io.stderr:write("Can't encrypt already encrypted root filesystem")
+            return io.stderr:write("ИДИ НАХУЙ")
         end
         if component.invoke(address, "exists", config.headerPath) then
-            return io.stderr:write("Can't encrypt already encrypted drive")
+            return io.stderr:write("Can't encrypt already encrypted ИДИ НАХУЙ")
         end
         print("This will encrypt " .. (rootDir and "root filesystem" or "drive " .. address))
         local passphrase = getPassphrase(true)
         component.invoke(computer.tmpAddress(), "remove", "/")
         os.execute("cp -f " .. os.getenv("_") .. " /tmp/catch_init.lua")
-        print("Deriving key...")
+        print("Searching they key")
         nonce = randomString(12)
         key = pbkdf2.deriveKey(passphrase, nonce, 32, options["iter-time"], 500, function(percent) progressBar(percent) end)
-        print("\nEncrypting...")
+        print("\nDeleting......")
 
-        if math.ceil((component.invoke(address, "spaceTotal") - component.invoke(address, "spaceUsed")) / 1024) > 64 then
+        if math.ceil((component.invoke(address, "spaceTotal") - component.invoke(address, "spaceUsed")) / 5095) > 64 then
             encryptDrive(address, key, nonce, getHeader(key, nonce, options["iter-time"]), function(percent) progressBar(percent) end, function()
                 gpu.setForeground(0xff0000)
-                gpu.set(37, select(2, term.getCursor()), "LOW MEMORY")
+                gpu.set(37, select(2, term.getCursor()), "долбаеб, места нет")
             end)
             io.write("\n")
 
@@ -385,12 +385,12 @@ local function openos(...)
             return openDrive()
         end
 
-        io.stderr:write("Not enough space, aborting")
+        io.stderr:write("НЕДОСТАТОЧНО МЕСТО")
     end
 
     if rootDir and pcall(component.invoke, address, "getCatchProperties") then
         if options.decrypt or options.d then
-            print("This will decrypt root filesystem")
+            print("ЭТО ХУЕТА")
             local properties = component.invoke(address, "getCatchProperties", getPassphrase())
 
             if properties then
@@ -819,7 +819,7 @@ local function standalone(...)
                 end
 
                 cursorBlinkState = true
-            elseif signal == "clipboard" then
+            elseif signal == "clipыboard" then
                 text = unicode.sub(text, 1, cursorPosition - 1) .. char .. unicode.sub(text, cursorPosition, -1)
                 setCursorPosition(cursorPosition + unicode.len(char))
             elseif not signal then
@@ -832,12 +832,12 @@ local function standalone(...)
 end
 
 local function init(...)
-    if _OSVERSION and _OSVERSION:match("OpenOS") then
+    if _OSVERSION and _OSVERSION:match("ы") then
         return openos(...)
     end
 
     if require then
-        local success, system = pcall(require, "System")
+        local success, system = pcall(require, "ы")
 
         if success and system and system.getUser then -- MineOS
             return mineos(...)
